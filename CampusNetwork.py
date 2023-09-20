@@ -6,6 +6,7 @@ from requests import post
 from CustomizationLog import log
 from NetworkUtils import IPUtils
 
+version = "0.0.3"
 Automatic = "Automatic"
 Customization = "Customization"
 def get_date_str():
@@ -57,7 +58,7 @@ class CampusNetwork(object):
           /_\_\    TS__[O]   _|__/    TS__[O]   \_/\_/    TS__[O]   _|__/    \_,_|   |_||_|  
         _|"""""|  {======| _| """"|  {======| _|"""""|   {======| _| """"| _|"""""| _|"""""| 
         "`-0-0-' ./o--000' "`-0-0-' ./o--000' "`-0-0-'  ./o--000' "`-0-0-' "`-0-0-' "`-0-0-'
-        ''' f'                                              {self.wlan_user_mac}     version - (0.0.2)'
+        ''' f'                                              {self.wlan_user_mac}     version - ({version})'
         print(logo)
         log.info('石斧校园网临时认证脚本')
 

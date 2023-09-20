@@ -11,6 +11,6 @@ from CampusNetwork import CampusNetwork, Automatic
 # }
 
 if __name__ == '__main__':
-    modify_ip_list = ['10.1.143.239', '10.1.143.240', '10.1.143.241']
+    modify_ip_list = ['xxx.xxx.xxx.xxx', 'xxx.xxx.xxx.xxx', 'xxx.xxx.xxx.xxx']
     CampusNetwork(mode=Automatic, card_name="WLAN", modify_ip_list=modify_ip_list).run()
 

@@ -2,6 +2,7 @@
 ### IntelliJ project files
 .idea/
 test/
+__pycache__/
 *.iml
 /target/*
 /**/target/
