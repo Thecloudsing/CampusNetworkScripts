@@ -55,7 +55,7 @@ class IPUtils(object):
         current_ip_index = self.ip_address_index
 
         while True:
-            if current_ip_index > len(self.modify_ip_list) - 1:
+            if current_ip_index > len(self.modify_ip_list):
                 current_ip_index = 0
             current_ip_index += 1
             modify_ip = self.modify_ip_list[current_ip_index]
