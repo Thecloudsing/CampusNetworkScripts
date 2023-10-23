@@ -1,4 +1,4 @@
-from CampusNetwork import CampusNetwork, Automatic
+from CampusNetwork import CampusNetwork, Automatic, Customization
 
 # headers = {
 #     'Connection': 'keep-alive',
@@ -11,6 +11,7 @@ from CampusNetwork import CampusNetwork, Automatic
 # }
 
 if __name__ == '__main__':
-    modify_ip_list = ['xxx.xxx.xxx.xxx', 'xxx.xxx.xxx.xxx', 'xxx.xxx.xxx.xxx']
-    CampusNetwork(mode=Automatic, card_name="WLAN", modify_ip_list=modify_ip_list).run()
+    # modify_ip_list = ['xxx.xxx.xxx.xxx', 'xxx.xxx.xxx.xxx', 'xxx.xxx.xxx.xxx']
+    # CampusNetwork(mode=Customization, card_name="WLAN", card_ip="'xxx.xxx.xxx.xxx'", card_mac="FF:FF:FF:FF:FF:FF", modify_ip_list=modify_ip_list).run()
+    CampusNetwork(card_name="WLAN").run()
 

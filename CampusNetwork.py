@@ -9,6 +9,8 @@ from NetworkUtils import IPUtils
 version = "0.0.3"
 Automatic = "Automatic"
 Customization = "Customization"
+
+
 def get_date_str():
     date_str = str((time() * 1000))
     end = 13
@@ -21,12 +23,11 @@ class CampusNetwork(object):
 
     def __init__(self, mode="Automatic", **kwargs):
         modes = ["Automatic", "Customization"]
-        card_name = ""
+        card_name = kwargs["card_name"]
         if mode not in modes:
             log.error("mode出错,已结束运行...")
             exit()
-        if mode == "Automatic":
-            card_name = kwargs["card_name"]
+
         # self.username: str = kwargs["username"]
         # self.password: str = kwargs["password"]
         self.t_server_typeid = "axe"
@@ -41,7 +42,11 @@ class CampusNetwork(object):
                           'Chrome/113.0.0.0 '
                           'Safari/537.36 Edg/113.0.1774.57'
         }
-        self.card = IPUtils(card_name=card_name, modify_ip_list=kwargs["modify_ip_list"])
+        self.card = IPUtils(
+            card_name=card_name,
+            card_ip=kwargs.get("card_ip"),
+            card_mac=kwargs.get("card_mac"),
+            modify_ip_list=kwargs.get("modify_ip_list"))
         if mode == "Customization":
             self.wlan_user_ip = kwargs["card_ip"]
             self.wlan_user_mac = kwargs["card_mac"]

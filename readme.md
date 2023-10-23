@@ -10,11 +10,14 @@
 
 #### 在 Automatic 模式下必要参数
 - `card_name` => 连接校园网的网卡名称，作用是自动获取IP及MAC信息
-- `modify_ip_list` => IP更换列表，作用是在限流的情况下更换IP，重新发起请求【需要注意的是IP在校园网内网段，避免IP冲突】
+
+#### 在 Automatic 模式下可选填参数
+- `modify_ip_list` ==> IP更换列表，作用是在限流的情况下更换IP，重新发起请求【需要注意的是IP在校园网内网段，避免IP冲突】
 
 #### 在 Customization 模式下必要参数
+- `card_name` => 连接校园网的网卡名称，作用是修改IP
 - `card_ip` => 连接校园网的网卡IP
-- `card_mac` => 连接校园网的网卡MAC地址，如FF:FF:FF:FF:FF:FF
+- `card_mac` => 连接校园网的网卡MAC地址，如*FF:FF:FF:FF:FF:FF*
 - `modify_ip_list` => IP更换列表，作用是在限流的情况下更换IP，重新发起请求【需要注意的是IP在校园网内网段，避免IP冲突】
 
 ### z_dat.db
