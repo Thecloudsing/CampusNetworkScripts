@@ -40,7 +40,7 @@ class IPUtils(object):
                     for i in range(0, 10):
                         last += 1
                         if last > 253:
-                            break
+                            last = 100
                         self.modify_ip_list.append(first + str(last))
                     log.info(f'自动获取IP列表 ==> {self.modify_ip_list}')
                 else:
@@ -55,7 +55,7 @@ class IPUtils(object):
         current_ip_index = self.ip_address_index
 
         while True:
-            if current_ip_index > len(self.modify_ip_list):
+            if current_ip_index >= len(self.modify_ip_list):
                 current_ip_index = 0
             current_ip_index += 1
             modify_ip = self.modify_ip_list[current_ip_index]
@@ -74,3 +74,4 @@ class IPUtils(object):
         except:
             log.error(f'没有管理员权限, 请以管理员方式运行py')
             exit()
+
