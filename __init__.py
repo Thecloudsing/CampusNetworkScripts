@@ -1,5 +1,3 @@
-import sys
-
 from CampusNetwork import CampusNetwork, Automatic, Customization
 
 # headers = {
