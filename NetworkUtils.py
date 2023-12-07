@@ -1,6 +1,5 @@
-import re
+from re import compile
 import subprocess
-from array import array
 from time import sleep
 from CustomizationLog import log
 
@@ -25,7 +24,7 @@ class IPUtils(object):
                   f'物理地址. . . . . . . . . . . . . : {mac_reg_str}(.|\\n)*?' \
                   f'IPv4 地址 . . . . . . . . . . . . : {ip_reg_str}(.|\\n)*'
         ipconfig = subprocess.check_output('ipconfig/all', shell=True)
-        reg = re.compile(reg_str)
+        reg = compile(reg_str)
         match = reg.match(str(ipconfig, 'GBK'))
         try:
             if match is not None:

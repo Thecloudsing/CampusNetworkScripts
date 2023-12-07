@@ -1,4 +1,3 @@
-from sys import exit
 from json import loads
 from time import time, sleep
 from requests import post
@@ -6,7 +5,7 @@ from requests import post
 from CustomizationLog import log
 from NetworkUtils import IPUtils
 
-version = "0.0.3"
+version = "0.0.4"
 Automatic = "Automatic"
 Customization = "Customization"
 
@@ -22,6 +21,7 @@ def get_date_str():
 class CampusNetwork(object):
 
     def __init__(self, mode="Automatic", **kwargs):
+        open('z_dat.db', 'a+').close()
         modes = ["Automatic", "Customization"]
         card_name = kwargs["card_name"]
         if mode not in modes:
@@ -68,17 +68,17 @@ class CampusNetwork(object):
         log.info('石斧校园网临时认证脚本')
 
     def read(self):
-        with open('z_dat.db', 'rt') as file:
-            data_json = file.read(-1)
-            file.close()
-            try:
+        try:
+            with open('z_dat.db', 'rt') as file:
+                data_json = file.read(-1)
+                file.close()
                 data = loads(data_json)
                 self.dis_token = data["distoken"]
-            except:
-                pass
+        except:
+            pass
 
     def write(self, data):
-        with open('z_dat.db', 'tw') as file:
+        with open('z_dat.db', 'tw+') as file:
             file.write(str(data).replace("'", '"'))
             file.close()
 
@@ -94,7 +94,6 @@ class CampusNetwork(object):
             "userId": self.auto_userid + get_date_str(),
             "passwd": self.auto_passwd
         }
-        self.write(data)
         portalAuthUrl = f"http://1.1.1.1:8888/quickAuthShare.do?" \
                         f"wlanacip={self.wlan_ac_ip}&" \
                         f"wlanacname={self.wlan_ac_name}&" \
@@ -107,6 +106,7 @@ class CampusNetwork(object):
             try:
                 ret = post(headers=self.request_head, data={}, url=portalAuthUrl, timeout=5)
                 ret_text = ret.text
+                self.write(ret_text)
                 break
             except:
                 if i == 4:

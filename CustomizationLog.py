@@ -30,3 +30,12 @@ stream.setFormatter(formatter)
 log = logging.getLogger('root')
 log.setLevel(LOG_LEVEL)
 log.addHandler(stream)
+
+if __name__ == "__main__":
+    open('z_dat_e.db', 'w+').close()
+
+    with open('z_dat_e.db', 'r') as file:
+        a = file.read()
+        print(a)
+        # file.write("wwwwwwwwwwwwwwww")
+        pass

@@ -1,3 +1,5 @@
+import sys
+
 from CampusNetwork import CampusNetwork, Automatic, Customization
 
 # headers = {
@@ -13,5 +15,7 @@ from CampusNetwork import CampusNetwork, Automatic, Customization
 if __name__ == '__main__':
     # modify_ip_list = ['xxx.xxx.xxx.xxx', 'xxx.xxx.xxx.xxx', 'xxx.xxx.xxx.xxx']
     # CampusNetwork(mode=Customization, card_name="WLAN", card_ip="'xxx.xxx.xxx.xxx'", card_mac="FF:FF:FF:FF:FF:FF", modify_ip_list=modify_ip_list).run()
+    # sys.argv[]
+
     CampusNetwork(card_name="WLAN").run()
 
