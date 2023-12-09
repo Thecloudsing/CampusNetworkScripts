@@ -17,6 +17,12 @@ class IPUtils(object):
             self.get_ip_address()
 
     def get_ip_address(self):
+        try:
+            command = f'netsh interface ip set address name="{self.card_name}" dhcp'
+            output = subprocess.run(["powershell.exe", "-Command", command], shell=True, check=True)
+        except:
+            log.info(f'dhcp interface error, name ==> [{self.card_name}]')
+
         ip3_reg_str = '((2[0-4]\d)|(25[0-5])|(1\d{2})|([1-9]\d)|([1-9]))'
         ip_reg_str = f'(({ip3_reg_str}\.){{3}}{ip3_reg_str})'
         mac_reg_str = '((([\da-fA-F]){2}-){5}([\da-fA-F]){2})'
@@ -30,7 +36,7 @@ class IPUtils(object):
             if match is not None:
                 self.card_mac = match.group(3).replace('-', ':')
                 self.card_ip = match.group(8)
-                if self.modify_ip_list is None:
+                if self.modify_ip_list is None or self.modify_ip_list == []:
                     self.modify_ip_list = []
                     self.modify_ip_list.append(self.card_ip)
                     last_index = self.card_ip.rindex('.')
@@ -62,7 +68,8 @@ class IPUtils(object):
                 break
 
         try:
-            command = f'netsh interface ip set address name={self.card_name} static {modify_ip} 255.255.248.0 10.1.143.253'
+            command = f'netsh interface ip set address name="{self.card_name}" static {modify_ip} ' \
+                      '255.255.248.0 10.1.143.253'
             output = subprocess.run(["powershell.exe", "-Command", command], shell=True, check=True)
             log.info(f'修改IP 地址 => [ "{self.card_ip}" => "{modify_ip}" ]')
             log.info(f'command ==> [{command}]')
@@ -74,3 +81,11 @@ class IPUtils(object):
             log.error(f'没有管理员权限, 请以管理员方式运行py')
             exit()
 
+def match_ip(ip):
+    ip_item = '((25[0-5])|(2[0-4]\d)|(1\d{2})|([1-9]\d)|\d)'
+    reg = compile(f'^(({ip_item}\.){{3}}{ip_item})$')
+    try:
+        match = reg.match(ip.strip())
+        return match.group(1)
+    except:
+        pass

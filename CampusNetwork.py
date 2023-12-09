@@ -5,10 +5,14 @@ from requests import post
 from CustomizationLog import log
 from NetworkUtils import IPUtils
 
-version = "0.0.4"
+version = "0.0.5"
 Automatic = "Automatic"
 Customization = "Customization"
 
+mode = {
+    "auto": Automatic,
+    "custom": Customization
+}
 
 def get_date_str():
     date_str = str((time() * 1000))
