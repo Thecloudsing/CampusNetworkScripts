@@ -14,6 +14,7 @@ mode = {
     "custom": Customization
 }
 
+
 def get_date_str():
     date_str = str((time() * 1000))
     end = 13
@@ -90,7 +91,6 @@ class CampusNetwork(object):
     def modify_ip(self):
         self.wlan_user_ip = self.card.set_ip_address()
 
-
     def provisional_certification(self):
         data = {
             "wlanacip": self.wlan_ac_ip,
@@ -113,11 +113,15 @@ class CampusNetwork(object):
             try:
                 ret = post(headers=self.request_head, data={}, url=portalAuthUrl, timeout=5)
                 ret_text = ret.text
+                if ret_text is None or ret_text == '':
+                    log.error('访问不到网站请检查IP')
+                    raise
                 self.write(ret_text)
                 break
             except:
-                log.error(f'发送临时认证信息失败, 第{i+1}次, 重试')
+                log.error(f'发送临时认证信息失败, 第{i + 1}次, 重试')
                 self.modify_ip()
+
             finally:
                 i += 1
 
@@ -125,7 +129,13 @@ class CampusNetwork(object):
             log.error(f'网络异常, 结束运行...')
             exit()
 
-        result = loads(ret_text)
+        result = {
+            'message': '无法反序列化，未知原因',
+        }
+        try:
+            result = loads(ret_text)
+        except:
+            pass
         message = result["message"]
         log.info(f'认证信息 => [{data}]')
 
@@ -164,4 +174,3 @@ class CampusNetwork(object):
         while True:
             self.provisional_certification()
             sleep(60 * 3 + 13)
-
