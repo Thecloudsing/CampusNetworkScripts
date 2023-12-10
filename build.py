@@ -10,8 +10,8 @@ if os.path.isdir(build):
     shutil.rmtree(build)
 if os.path.isfile(dist):
     os.remove(dist)
-# if os.path.isdir(dist):
-    # shutil.rmtree(dist)
+if os.path.isdir(dist):
+    shutil.rmtree(dist)
 build_command = "pyinstaller ./Dream.spec"
 install_command = "pip install pyinstaller"
 try:
