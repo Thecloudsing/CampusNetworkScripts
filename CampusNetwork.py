@@ -5,7 +5,7 @@ from requests import post
 from CustomizationLog import log
 from NetworkUtils import IPUtils
 
-version = "v0.1.0"
+version = "v0.1.1"
 Automatic = "Automatic"
 Customization = "Customization"
 
