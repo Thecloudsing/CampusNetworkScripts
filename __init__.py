@@ -1,7 +1,9 @@
 from argparse import ArgumentParser
+
 from CampusNetwork import CampusNetwork, mode
 from NetworkUtils import match_ip
 
+import ctypes, sys, win32api
 # headers = {
 #     'Connection': 'keep-alive',
 #     'Accept': 'application/json, text/plain, */*',
@@ -11,7 +13,6 @@ from NetworkUtils import match_ip
 #     'Accept-Encoding': 'gzip,deflate',
 #     'Accept-Language': 'zh-CN,zh;q=0.9'
 # }
-
 
 if __name__ == '__main__':
     # modify_ip_list = ['xxx.xxx.xxx.xxx', 'xxx.xxx.xxx.xxx', 'xxx.xxx.xxx.xxx']
