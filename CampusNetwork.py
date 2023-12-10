@@ -5,7 +5,7 @@ from requests import post
 from CustomizationLog import log
 from NetworkUtils import IPUtils
 
-version = "0.0.6"
+version = "v0.1.0"
 Automatic = "Automatic"
 Customization = "Customization"
 
@@ -34,6 +34,7 @@ class CampusNetwork(object):
 
         # self.username: str = kwargs["username"]
         # self.password: str = kwargs["password"]
+        self.stop = kwargs["stop"]
         self.t_server_typeid = "axe"
         self.wlan_ac_ip = "1.1.1.1"
         self.wlan_ac_name = "axe135"
@@ -89,6 +90,7 @@ class CampusNetwork(object):
     def modify_ip(self):
         self.wlan_user_ip = self.card.set_ip_address()
 
+
     def provisional_certification(self):
         data = {
             "wlanacip": self.wlan_ac_ip,
@@ -106,18 +108,22 @@ class CampusNetwork(object):
                         f"userId={self.auto_userid}{get_date_str()}&" \
                         f"passwd={self.auto_passwd}"
         ret_text = ""
-        for i in range(1, 5):
+        i = 0
+        while i < self.stop or -1 == self.stop:
             try:
                 ret = post(headers=self.request_head, data={}, url=portalAuthUrl, timeout=5)
                 ret_text = ret.text
                 self.write(ret_text)
                 break
             except:
-                if i == 4:
-                    log.error(f'网络异常, 结束运行...')
-                    exit()
-                log.error(f'发送临时认证信息失败, 第{i}次, 重试')
+                log.error(f'发送临时认证信息失败, 第{i+1}次, 重试')
                 self.modify_ip()
+            finally:
+                i += 1
+
+        if i == self.stop:
+            log.error(f'网络异常, 结束运行...')
+            exit()
 
         result = loads(ret_text)
         message = result["message"]

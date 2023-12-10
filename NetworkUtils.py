@@ -19,7 +19,8 @@ class IPUtils(object):
     def get_ip_address(self):
         try:
             command = f'netsh interface ip set address name="{self.card_name}" dhcp'
-            output = subprocess.run(["powershell.exe", "-Command", command], shell=True, check=True)
+            output = subprocess.check_output(f"powershell.exe -Command {command}", shell=True, encoding="GBK")
+            print(output)
         except:
             log.info(f'dhcp interface error, name ==> [{self.card_name}]')
 
@@ -29,9 +30,9 @@ class IPUtils(object):
         reg_str = f'(.|\\n)*无线局域网适配器 {self.card_name}:(.|\\n)*?' \
                   f'物理地址. . . . . . . . . . . . . : {mac_reg_str}(.|\\n)*?' \
                   f'IPv4 地址 . . . . . . . . . . . . : {ip_reg_str}(.|\\n)*'
-        ipconfig = subprocess.check_output('ipconfig/all', shell=True)
+        ipconfig = subprocess.check_output('ipconfig/all', shell=True, encoding="GBK")
         reg = compile(reg_str)
-        match = reg.match(str(ipconfig, 'GBK'))
+        match = reg.match(ipconfig)
         try:
             if match is not None:
                 self.card_mac = match.group(3).replace('-', ':')
@@ -60,7 +61,7 @@ class IPUtils(object):
         current_ip_index = self.ip_address_index
 
         while True:
-            if current_ip_index >= len(self.modify_ip_list):
+            if current_ip_index >= len(self.modify_ip_list) - 1:
                 current_ip_index = 0
             current_ip_index += 1
             modify_ip = self.modify_ip_list[current_ip_index]
@@ -70,15 +71,16 @@ class IPUtils(object):
         try:
             command = f'netsh interface ip set address name="{self.card_name}" static {modify_ip} ' \
                       '255.255.248.0 10.1.143.253'
-            output = subprocess.run(["powershell.exe", "-Command", command], shell=True, check=True)
             log.info(f'修改IP 地址 => [ "{self.card_ip}" => "{modify_ip}" ]')
             log.info(f'command ==> [{command}]')
+            output = subprocess.check_output(f"powershell.exe -Command {command}", shell=True, encoding="GBK")
+            print(output)
             self.ip_address_index = current_ip_index
             self.card_ip = modify_ip
             sleep(5)
             return modify_ip
         except:
-            log.error(f'没有管理员权限, 请以管理员方式运行py')
+            log.error(f'修改IP失败，出错... (可能不是以管理员方式运行)')
             exit()
 
 def match_ip(ip):
