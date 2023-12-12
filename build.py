@@ -13,7 +13,6 @@ if os.path.isfile(dist):
 if os.path.isdir(dist):
     shutil.rmtree(dist)
 build_command = "pyinstaller ./Dream.spec"
-install_command = "pip install pyinstaller"
 try:
     subprocess.run(["powershell.exe", "-Command", build_command], shell=True, check=True)
 except:

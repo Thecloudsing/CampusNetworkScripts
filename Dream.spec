@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['main.py', 'CampusNetwork.py', 'CustomizationLog.py', 'NetworkUtils.py'],
+    ['main.py', 'core\\CampusNetwork.py', 'core\\CustomizationLog.py', 'core\\NetworkUtils.py'],
     pathex=['.\\'],
     binaries=[],
     datas=[],
