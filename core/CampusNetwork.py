@@ -1,11 +1,12 @@
+import atexit
 from json import loads
 from time import time, sleep
 from requests import post
+from core.FileUtils import BinFile, batch_exists_dir
+from core.CustomizationLog import log, out_err
+from core.NetworkUtils import IPUtils
 
-from CustomizationLog import log
-from NetworkUtils import IPUtils
-
-version = "v0.1.1"
+version = "v0.2.0"
 Automatic = "Automatic"
 Customization = "Customization"
 
@@ -24,9 +25,13 @@ def get_date_str():
 
 
 class CampusNetwork(object):
+    root_path = '.'
+    db_path = f'{root_path}/db'
+    config_path = f'{root_path}/config'
 
     def __init__(self, mode="Automatic", **kwargs):
-        open('z_dat.db', 'a+').close()
+        batch_exists_dir([self.db_path, self.config_path])
+
         modes = ["Automatic", "Customization"]
         card_name = kwargs["card_name"]
         if mode not in modes:
@@ -35,6 +40,8 @@ class CampusNetwork(object):
 
         # self.username: str = kwargs["username"]
         # self.password: str = kwargs["password"]
+        self.dis_token_file = BinFile(f'{self.db_path}/dis.token.db', supplement=True)
+        atexit.register(self.dis_token_file.close)
         self.stop = kwargs["stop"]
         self.t_server_typeid = "axe"
         self.wlan_ac_ip = "1.1.1.1"
@@ -75,18 +82,15 @@ class CampusNetwork(object):
 
     def read(self):
         try:
-            with open('z_dat.db', 'rt') as file:
-                data_json = file.read(-1)
-                file.close()
-                data = loads(data_json)
-                self.dis_token = data["distoken"]
-        except:
-            pass
+            data_json = self.dis_token_file.last_line()
+            data = loads(data_json)
+            self.dis_token = data["distoken"]
+        except Exception as e:
+            out_err()
 
     def write(self, data):
-        with open('z_dat.db', 'tw+') as file:
-            file.write(str(data).replace("'", '"'))
-            file.close()
+        self.dis_token_file.writer(str(data).replace("'", '"').join('\n').encode())
+        self.dis_token_file.flush()
 
     def modify_ip(self):
         self.wlan_user_ip = self.card.set_ip_address()
@@ -118,7 +122,7 @@ class CampusNetwork(object):
                     raise
                 self.write(ret_text)
                 break
-            except:
+            except Exception as e:
                 log.error(f'发送临时认证信息失败, 第{i + 1}次, 重试')
                 self.modify_ip()
 

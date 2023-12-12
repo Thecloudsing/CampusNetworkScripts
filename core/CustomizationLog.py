@@ -1,5 +1,10 @@
-import logging
+import logging, traceback, atexit
+from time import asctime, localtime, time
 from colorlog import ColoredFormatter
+from core.FileUtils import exists_dir
+
+log_path = './log'
+exists_dir(log_path)
 
 
 class CustomizationFormatter(ColoredFormatter):
@@ -23,6 +28,10 @@ formatter = CustomizationFormatter(
     datefmt=DATE_FORMAT
 )
 
+file_handler = logging.FileHandler(f'{log_path}/run.log', mode='+a', encoding='utf8')
+file_handler.setLevel(level=logging.INFO)
+file_handler.setFormatter(formatter)
+
 stream = logging.StreamHandler()
 stream.setLevel(LOG_LEVEL)
 stream.setFormatter(formatter)
@@ -30,12 +39,20 @@ stream.setFormatter(formatter)
 log = logging.getLogger('root')
 log.setLevel(LOG_LEVEL)
 log.addHandler(stream)
+log.addHandler(file_handler)
 
-if __name__ == "__main__":
-    open('z_dat_e.db', 'w+').close()
+error_file = open(file=f'{log_path}/error.log', mode='+a', encoding='utf8')
 
-    with open('z_dat_e.db', 'r') as file:
-        a = file.read()
-        print(a)
-        # file.write("wwwwwwwwwwwwwwww")
-        pass
+
+def out_err():
+    error_file.write(f'\n{asctime(localtime(time()))}\n')
+    traceback.print_exc(file=error_file)
+    error_file.flush()
+
+
+def close():
+    error_file.close()
+    log.info('file close.')
+
+
+atexit.register(close)

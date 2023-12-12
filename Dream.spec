@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['__init__.py', 'CampusNetwork.py', 'CustomizationLog.py', 'NetworkUtils.py'],
+    ['main.py', 'CampusNetwork.py', 'CustomizationLog.py', 'NetworkUtils.py'],
     pathex=['.\\'],
     binaries=[],
     datas=[],
@@ -35,5 +35,5 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
     uac_admin=True,
-    icon=['.\\dream.ico'],
+    icon=['.\\resources\\dream.ico'],
 )

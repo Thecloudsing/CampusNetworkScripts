@@ -1,7 +1,7 @@
 from re import compile
 import subprocess
 from time import sleep
-from CustomizationLog import log
+from core.CustomizationLog import log, out_err
 
 
 class IPUtils(object):
@@ -15,13 +15,15 @@ class IPUtils(object):
 
         if self.card_name is None or self.card_mac is None:
             self.get_ip_address()
+        else:
+            print('tttttttttttttt')
 
     def get_ip_address(self):
         try:
             command = f'netsh interface ip set address name="{self.card_name}" dhcp'
-            output = subprocess.check_output(f"powershell.exe -Command {command}", shell=True, encoding="GBK")
-            print(output)
-        except:
+            subprocess.run(['powershell.exe', '-Command', command], shell=True)
+        except Exception as e:
+            out_err()
             log.info(f'dhcp interface error, name ==> [{self.card_name}]')
 
         ip3_reg_str = '((2[0-4]\d)|(25[0-5])|(1\d{2})|([1-9]\d)|([1-9]))'
@@ -53,7 +55,8 @@ class IPUtils(object):
                     log.info(f'自定义IP列表 ==> {self.modify_ip_list}')
                 self.ip_address_index = self.modify_ip_list.index(self.card_ip)
                 return self.card_ip + "|" + self.card_mac
-        except:
+        except Exception as e:
+            out_err()
             log.error(f'获取ip地址失败, 请以检查网卡名字是否正确')
             exit()
 
@@ -73,13 +76,13 @@ class IPUtils(object):
                       '255.255.248.0 10.1.143.253'
             log.info(f'修改IP 地址 => [ "{self.card_ip}" => "{modify_ip}" ]')
             log.info(f'command ==> [{command}]')
-            output = subprocess.check_output(f"powershell.exe -Command {command}", shell=True, encoding="GBK")
-            print(output)
+            subprocess.run(['powershell.exe', '-Command', command], shell=True)
             self.ip_address_index = current_ip_index
             self.card_ip = modify_ip
             sleep(5)
             return modify_ip
-        except:
+        except Exception as e:
+            out_err()
             log.error(f'修改IP失败，出错... (可能不是以管理员方式运行)')
             exit()
 
