@@ -89,7 +89,7 @@ class CampusNetwork(object):
             out_err()
 
     def write(self, data):
-        self.dis_token_file.writer(str(data).replace("'", '"').join('\n').encode())
+        self.dis_token_file.writer(f'{str(data)}\n'.replace("'", '"').encode())
         self.dis_token_file.flush()
 
     def modify_ip(self):

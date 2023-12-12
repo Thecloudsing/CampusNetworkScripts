@@ -21,6 +21,7 @@ class CustomizationFormatter(ColoredFormatter):
 
 LOG_LEVEL = logging.INFO
 LOG_FORMAT = "%(log_color)s%(asctime)s  %(levelname)-10s%(process)d --- [%(customization_funcName)20s] %(filename)-10s : %(message)s%(reset)s"
+FILE_LOG_FORMAT = "%(asctime)s  %(levelname)-10s%(process)d --- [%(customization_funcName)20s] %(filename)-10s : %(message)s"
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 logging.root.setLevel(LOG_LEVEL)
 formatter = CustomizationFormatter(
@@ -30,7 +31,7 @@ formatter = CustomizationFormatter(
 
 file_handler = logging.FileHandler(f'{log_path}/run.log', mode='+a', encoding='utf8')
 file_handler.setLevel(level=logging.INFO)
-file_handler.setFormatter(formatter)
+file_handler.setFormatter(logging.Formatter(FILE_LOG_FORMAT))
 
 stream = logging.StreamHandler()
 stream.setLevel(LOG_LEVEL)
