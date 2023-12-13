@@ -22,14 +22,24 @@
 
 ## 目录结构
 
-- ### db/ 
+- ### `main.py` 程序主入口
+- ### `build.py` 程序打包
+- ### `requirements.txt` 依赖模块
+
+- ### /core 
+  * `CampusNetwork.py` 核心模块
+  * `CustomizationLog.py` 自定义日志模块
+  * `FileUtils.py` 文件工具类
+  * `NetworkUtils.py` 网络工具类
+
+- ### /db 
   * `dis.token.db` 存储上次，获取的认证信息
 
-- ### log/
+- ### /log
   * `error.log` 错误日志
   * `run.log` 运行日志
 
-- ### config/
+- ### /config
   * `config.properties` 配置文件 ~ 目前没有用
   
 
