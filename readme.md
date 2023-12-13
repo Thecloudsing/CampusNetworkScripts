@@ -22,16 +22,15 @@
 
 ## 目录结构
 
-- ### db/dis.token.db
-  * 存储上次，获取的认证信息
+- ### db/ 
+  * `dis.token.db` 存储上次，获取的认证信息
 
-- ### log/error.log
-  * 错误日志
-- ### log/run.log
-  * 运行日志
+- ### log/
+  * `error.log` 错误日志
+  * `run.log` 运行日志
 
-- ### config/config.properties
-  * 配置文件 ~ 目前没有用
+- ### config/
+  * `config.properties` 配置文件 ~ 目前没有用
   
 
 
