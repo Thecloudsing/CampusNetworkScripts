@@ -1,0 +1,6 @@
+--index https://pypi.douban.com/simple/
+json
+requests
+certifi
+colorama
+colorlog

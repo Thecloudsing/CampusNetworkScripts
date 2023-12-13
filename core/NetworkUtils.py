@@ -5,6 +5,11 @@ from core.CustomizationLog import log, out_err
 
 
 class IPUtils(object):
+    primary_dns = '8.8.8.8'
+    spare_dns = '223.5.5.5'
+    mask = '255.255.248.0'
+    gateway = '10.1.143.253'
+    gwmetric = '1'
 
     def __init__(self, **kwargs):
         self.card_ip = kwargs.get("card_ip")
@@ -72,11 +77,16 @@ class IPUtils(object):
                 break
 
         try:
-            command = f'netsh interface ip set address name="{self.card_name}" static {modify_ip} ' \
-                      '255.255.248.0 10.1.143.253'
+            name = f'name="{self.card_name}"'
+            set_ip_command = f'netsh interface ip set address {name} static {modify_ip} ' \
+                             f'{self.mask} {self.gateway} {self.gwmetric}'
+            set_dns_command = f'netsh interface ip set dns {name} static {self.primary_dns} primary'
+            add_dns_command = f'netsh interface ip add dns {name} {self.spare_dns} 2'
             log.info(f'修改IP 地址 => [ "{self.card_ip}" => "{modify_ip}" ]')
-            log.info(f'command ==> [{command}]')
-            subprocess.run(['powershell.exe', '-Command', command], shell=True)
+            log.info(f'command ==> [{set_ip_command}]')
+            subprocess.run(['powershell.exe', '-Command', set_ip_command], shell=True)
+            subprocess.run(['powershell.exe', '-Command', set_dns_command], shell=True)
+            subprocess.run(['powershell.exe', '-Command', add_dns_command], shell=True)
             self.ip_address_index = current_ip_index
             self.card_ip = modify_ip
             sleep(5)
@@ -85,6 +95,7 @@ class IPUtils(object):
             out_err()
             log.error(f'修改IP失败，出错... (可能不是以管理员方式运行)')
             exit()
+
 
 def match_ip(ip):
     ip_item = '((25[0-5])|(2[0-4]\d)|(1\d{2})|([1-9]\d)|\d)'

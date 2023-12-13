@@ -6,7 +6,7 @@ from core.FileUtils import BinFile, batch_exists_dir
 from core.CustomizationLog import log, out_err
 from core.NetworkUtils import IPUtils
 
-version = "v0.2.0"
+version = "v0.2.1"
 Automatic = "Automatic"
 Customization = "Customization"
 
