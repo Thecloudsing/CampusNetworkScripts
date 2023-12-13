@@ -20,8 +20,20 @@
 - `card_mac` => 连接校园网的网卡MAC地址，如*FF:FF:FF:FF:FF:FF*
 - `modify_ip_list` => IP更换列表，作用是在限流的情况下更换IP，重新发起请求【需要注意的是IP在校园网内网段，避免IP冲突】
 
-### z_dat.db
-* 存储上次，获取的认证信息
+## 目录结构
+
+- ### db/dis.token.db
+  * 存储上次，获取的认证信息
+
+- ### log/error.log
+  * 错误日志
+- ### log/run.log
+  * 运行日志
+
+- ### config/config.properties
+  * 配置文件 ~ 目前没有用
+  
+
 
 ### 如何知道可以用该脚本呢？
 1. 校园网是石斧
